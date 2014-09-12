@@ -31,7 +31,7 @@
 #define IS_VALID_PART(part) ((guint)part < N_RENDER_PARTS)
 
 typedef struct _LineState LineState;
-typedef struct _Point Point;
+typedef struct _Point PangoPoint;
 
 struct _Point
 {
@@ -90,7 +90,7 @@ static void
 to_device (PangoMatrix *matrix,
 	   double       x,
 	   double       y,
-	   Point       *result)
+	   PangoPoint       *result)
 {
   if (matrix)
     {
@@ -656,7 +656,7 @@ pango_renderer_default_draw_glyphs (PangoRenderer    *renderer,
   for (i = 0; i < glyphs->num_glyphs; i++)
     {
       PangoGlyphInfo *gi = &glyphs->glyphs[i];
-      Point p;
+      PangoPoint p;
 
       to_device (renderer->matrix,
 		 x + x_position + gi->geometry.x_offset,
@@ -767,8 +767,8 @@ static int
 compare_points (const void *a,
 		const void *b)
 {
-  const Point *pa = a;
-  const Point *pb = b;
+  const PangoPoint *pa = a;
+  const PangoPoint *pb = b;
 
   if (pa->y < pb->y)
     return -1;
@@ -791,7 +791,7 @@ draw_rectangle (PangoRenderer   *renderer,
 		int              width,
 		int              height)
 {
-  Point points[4];
+  PangoPoint points[4];
 
   /* Convert the points to device coordinates, and sort
    * in ascending Y order. (Ordering by X for ties)
@@ -801,7 +801,7 @@ draw_rectangle (PangoRenderer   *renderer,
   to_device (matrix, x, y + height, &points[2]);
   to_device (matrix, x + width, y + height, &points[3]);
 
-  qsort (points, 4, sizeof (Point), compare_points);
+  qsort (points, 4, sizeof (PangoPoint), compare_points);
 
   /* There are essentially three cases. (There is a fourth
    * case where trapezoid B is degenerate and we just have

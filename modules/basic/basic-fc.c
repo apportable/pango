@@ -449,18 +449,18 @@ PANGO_ENGINE_SHAPE_DEFINE_TYPE (BasicEngineFc, basic_engine_fc,
 				basic_engine_fc_class_init, NULL)
 
 void
-PANGO_MODULE_ENTRY(init) (GTypeModule *module)
+_pango_basic_fc_script_engine_init (GTypeModule *module)
 {
   basic_engine_fc_register_type (module);
 }
 
 void
-PANGO_MODULE_ENTRY(exit) (void)
+_pango_basic_fc_script_engine_exit (void)
 {
 }
 
 void
-PANGO_MODULE_ENTRY(list) (PangoEngineInfo **engines,
+_pango_basic_fc_script_engine_list (PangoEngineInfo **engines,
 			  int              *n_engines)
 {
   *engines = script_engines;
@@ -468,7 +468,7 @@ PANGO_MODULE_ENTRY(list) (PangoEngineInfo **engines,
 }
 
 PangoEngine *
-PANGO_MODULE_ENTRY(create) (const char *id)
+_pango_basic_fc_script_engine_create (const char *id)
 {
   if (!strcmp (id, SCRIPT_ENGINE_NAME))
     return g_object_new (basic_engine_fc_type, NULL);

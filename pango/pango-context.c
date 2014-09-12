@@ -1456,7 +1456,14 @@ itemize_state_process_run (ItemizeState *state)
        * to be able to render any of them. (for private or being encoded
        * scripts, etc.) (Recent glib returns true in isprint for PrivateUse.)
        */
+#ifdef APPORTABLE
+      // We must select font for space or else spaces around emoji characters
+      // will show up as 'COOL' emojis (Nexus 5) because apparently this is
+      // what space is mapped to.
+      if (
+#else
       if (wc == 0x0020 ||
+#endif
 	  G_UNLIKELY (!g_unichar_isprint (wc) &&
 		      g_unichar_type (wc) != G_UNICODE_PRIVATE_USE &&
 		      g_unichar_type (wc) != G_UNICODE_UNASSIGNED))

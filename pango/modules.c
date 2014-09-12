@@ -548,6 +548,10 @@ process_module_file (FILE *module_file, const gchar *module_file_dir)
 static void
 read_modules (void)
 {
+#ifdef APPORTABLE
+  //we dont expect to have any external modules
+  return;
+#endif
   FILE *module_file;
 
   char *file_str =  pango_config_key_get ("Pango/ModuleFiles");

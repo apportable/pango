@@ -209,6 +209,8 @@ _pango_get_lc_ctype (void)
   CFRelease (languages);
 
   return g_strdup (ret);
+#elif defined(ANDROID)
+  return g_strdup ("en_US.UTF-8"); // FIXME
 #else
   return g_strdup (setlocale (LC_CTYPE, NULL));
 #endif

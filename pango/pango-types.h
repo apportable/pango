@@ -22,8 +22,8 @@
 #ifndef __PANGO_TYPES_H__
 #define __PANGO_TYPES_H__
 
-#include <glib.h>
-#include <glib-object.h>
+#include <glib/glib.h>
+#include <glib/glib-object.h>
 
 G_BEGIN_DECLS
 

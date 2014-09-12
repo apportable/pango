@@ -194,8 +194,10 @@ show_version(const char *name G_GNUC_UNUSED,
 	     gpointer    data G_GNUC_UNUSED,
 	     GError    **error G_GNUC_UNUSED)
 {
+#if 0
   g_printf("pango-querymodules (%s) %s\n", PACKAGE_NAME, PACKAGE_VERSION);
   g_printf("module interface version: %s\n", MODULE_VERSION);
+#endif
   exit(0);
 }
 

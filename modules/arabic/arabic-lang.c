@@ -124,18 +124,18 @@ PANGO_ENGINE_LANG_DEFINE_TYPE (ArabicEngineLang, arabic_engine_lang,
 			       arabic_engine_lang_class_init, NULL)
 
 void
-PANGO_MODULE_ENTRY(init) (GTypeModule *module)
+_pango_arabic_lang_script_engine_init (GTypeModule *module)
 {
   arabic_engine_lang_register_type (module);
 }
 
 void
-PANGO_MODULE_ENTRY(exit) (void)
+_pango_arabic_lang_script_engine_exit (void)
 {
 }
 
 void
-PANGO_MODULE_ENTRY(list) (PangoEngineInfo **engines,
+_pango_arabic_lang_script_engine_list (PangoEngineInfo **engines,
 			  int              *n_engines)
 {
   *engines = script_engines;
@@ -143,7 +143,7 @@ PANGO_MODULE_ENTRY(list) (PangoEngineInfo **engines,
 }
 
 PangoEngine *
-PANGO_MODULE_ENTRY(create) (const char *id)
+_pango_arabic_lang_script_engine_create (const char *id)
 {
   if (!strcmp (id, SCRIPT_ENGINE_NAME))
     return g_object_new (arabic_engine_lang_type, NULL);

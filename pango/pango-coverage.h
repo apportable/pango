@@ -22,7 +22,7 @@
 #ifndef __PANGO_COVERAGE_H__
 #define __PANGO_COVERAGE_H__
 
-#include <glib.h>
+#include <glib/glib.h>
 
 G_BEGIN_DECLS
 
