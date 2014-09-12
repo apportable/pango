@@ -56,9 +56,11 @@ struct _PangoFT2Font
   PangoFcFont font;
 
   FT_Face face;
+  FT_Int strike_index;
   int load_flags;
 
   int size;
+  int actual_size; //in case of bitmap font
 
   GSList *metrics_by_lang;
 
@@ -80,7 +82,7 @@ struct _PangoFT2GlyphInfo
 GType pango_ft2_font_get_type (void) G_GNUC_CONST;
 
 PangoFT2Font * _pango_ft2_font_new                (PangoFT2FontMap   *ft2fontmap,
-						   FcPattern         *pattern);
+						   FcPattern         *pattern, int pixelsize);
 FT_Library     _pango_ft2_font_map_get_library    (PangoFontMap      *fontmap);
 const char    *_pango_ft2_ft_strerror             (FT_Error           error);
 void _pango_ft2_font_map_default_substitute (PangoFcFontMap *fcfontmap,

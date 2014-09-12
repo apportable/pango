@@ -62,7 +62,7 @@ static void     pango_ft2_font_real_unlock_face  (PangoFcFont    *font);
 
 PangoFT2Font *
 _pango_ft2_font_new (PangoFT2FontMap *ft2fontmap,
-		     FcPattern       *pattern)
+		     FcPattern       *pattern, int pixelsize)
 {
   PangoFontMap *fontmap = PANGO_FONT_MAP (ft2fontmap);
   PangoFT2Font *ft2font;
@@ -78,7 +78,11 @@ _pango_ft2_font_new (PangoFT2FontMap *ft2fontmap,
 
   if (FcPatternGetDouble (pattern, FC_PIXEL_SIZE, 0, &d) == FcResultMatch)
     ft2font->size = d*PANGO_SCALE;
+        FcChar8 *filename;
+        FcPatternGetString (pattern, FC_FILE, 0, &filename);
 
+
+  ft2font->actual_size = pixelsize;
   return ft2font;
 }
 
@@ -253,6 +257,44 @@ pango_ft2_font_get_face (PangoFont *font)
 				0, 0);
       if (error)
 	g_warning ("Error in FT_Set_Char_Size: %d", error);
+
+
+        FT_Face face = ft2font->face;
+            FT_Pos targetPPEM = PANGO_PIXELS_26_6 (ft2font->actual_size);
+            // find a bitmap strike equal to or just larger than the requested size
+            FT_Int chosenStrikeIndex = -1;
+            FT_Pos chosenPPEM = 0;
+            for (FT_Int strikeIndex = 0; strikeIndex < face->num_fixed_sizes; ++strikeIndex) {
+                FT_Pos thisPPEM = face->available_sizes[strikeIndex].y_ppem;
+                if (thisPPEM == targetPPEM) {
+                    // exact match - our search stops here
+                    chosenPPEM = thisPPEM;
+                    chosenStrikeIndex = strikeIndex;
+                    break;
+                } else if (chosenPPEM < targetPPEM) {
+                    // attempt to increase chosenPPEM
+                    if (thisPPEM > chosenPPEM) {
+                        chosenPPEM = thisPPEM;
+                        chosenStrikeIndex = strikeIndex;
+                    }
+                } else {
+                    // attempt to decrease chosenPPEM, but not below targetPPEM
+                    if (thisPPEM < chosenPPEM && thisPPEM > targetPPEM) {
+                        chosenPPEM = thisPPEM;
+                        chosenStrikeIndex = strikeIndex;
+                    }
+                }
+            }
+
+            if (chosenStrikeIndex != -1) {
+            	ft2font->strike_index = chosenStrikeIndex;
+            	error = FT_Select_Size(face, chosenStrikeIndex);
+            	if (error)
+        		g_warning ("Error in FT_Select_Size: %d", error);
+
+            }
+
+
     }
 
   return ft2font->face;

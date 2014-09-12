@@ -24,6 +24,7 @@
 #include "pangofc-font.h"
 #include "pangofc-fontmap.h"
 #include "pangofc-private.h"
+#include "pangoft2-private.h"
 #include "pango-layout.h"
 #include "pango-modules.h"
 #include "pango-impl-utils.h"
@@ -1030,6 +1031,36 @@ pango_fc_font_get_raw_extents (PangoFcFont    *fcfont,
 	  logical_rect->height = 0;
 	}
     }
+
+
+  if (face->glyph->format==FT_GLYPH_FORMAT_BITMAP) 
+  {
+        int xppem = face->size->metrics.x_ppem;
+        int yppem = face->size->metrics.y_ppem;
+        //int xmax = face->available_sizes[PANGO_FT2_FONT (fcfont)->strike_index].width / xppem; //probably needed on some fonts
+
+        int size = PANGO_FT2_FONT(fcfont)->actual_size;
+
+
+        float yscale = PANGO_PIXELS_26_6 (size)/ (yppem * 64.0f);
+        float xscale = yscale; //Skia does the same, which is wrong! we are matching skia
+
+      if (ink_rect)
+        {
+          ink_rect->x *= xscale;
+          ink_rect->width *= xscale;
+          ink_rect->y *= yscale;
+          ink_rect->height *= yscale;
+        }
+
+      if (logical_rect)
+        {
+          logical_rect->x *= xscale;
+          logical_rect->width *= xscale;
+          logical_rect->y *= yscale;
+          logical_rect->height *= yscale;
+        }
+  }
 
   PANGO_FC_FONT_UNLOCK_FACE (fcfont);
 }

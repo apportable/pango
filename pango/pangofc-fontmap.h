@@ -154,7 +154,7 @@ struct _PangoFcFontMapClass
 				      FcPattern        *pattern);
   /* Deprecated in favor of create_font */
   PangoFcFont  *(*new_font)          (PangoFcFontMap  *fontmap,
-				      FcPattern       *pattern);
+				      FcPattern       *pattern, int pixelsize);
 
   double       (*get_resolution)     (PangoFcFontMap             *fcfontmap,
 				      PangoContext               *context);
@@ -175,7 +175,7 @@ struct _PangoFcFontMapClass
 				      PangoFcFontsetKey          *fontsetkey,
 				      FcPattern                  *pattern);
   PangoFcFont  *(*create_font)       (PangoFcFontMap             *fontmap,
-				      PangoFcFontKey             *fontkey);
+				      PangoFcFontKey             *fontkey, int pixelsize);
   /*< private >*/
 
   /* Padding for future expansion */

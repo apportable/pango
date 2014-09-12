@@ -64,7 +64,7 @@ struct _PangoFT2FontMapClass
 
 static void          pango_ft2_font_map_finalize            (GObject              *object);
 static PangoFcFont * pango_ft2_font_map_new_font            (PangoFcFontMap       *fcfontmap,
-							     FcPattern            *pattern);
+							     FcPattern            *pattern, int pixelsize);
 static double        pango_ft2_font_map_get_resolution      (PangoFcFontMap       *fcfontmap,
 							     PangoContext         *context);
 static guint         pango_ft2_font_map_get_serial          (PangoFontMap         *fontmap);
@@ -382,7 +382,7 @@ pango_ft2_font_map_get_resolution (PangoFcFontMap       *fcfontmap,
 
 static PangoFcFont *
 pango_ft2_font_map_new_font (PangoFcFontMap  *fcfontmap,
-			     FcPattern       *pattern)
+			     FcPattern       *pattern, int pixelsize)
 {
-  return (PangoFcFont *)_pango_ft2_font_new (PANGO_FT2_FONT_MAP (fcfontmap), pattern);
+  return (PangoFcFont *)_pango_ft2_font_new (PANGO_FT2_FONT_MAP (fcfontmap), pattern, pixelsize);
 }

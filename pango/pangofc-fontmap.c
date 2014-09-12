@@ -1546,7 +1546,7 @@ pango_fc_font_map_new_font (PangoFcFontMap    *fcfontmap,
 
   if (class->create_font)
     {
-      fcfont = class->create_font (fcfontmap, &key);
+      fcfont = class->create_font (fcfontmap, &key, fontset_key->pixelsize);
     }
   else
     {
@@ -1569,7 +1569,7 @@ pango_fc_font_map_new_font (PangoFcFontMap    *fcfontmap,
       FcPatternDel (pattern, FC_MATRIX);
       FcPatternAddMatrix (pattern, FC_MATRIX, &fc_matrix);
 
-      fcfont = class->new_font (fcfontmap, uniquify_pattern (fcfontmap, pattern));
+      fcfont = class->new_font (fcfontmap, uniquify_pattern (fcfontmap, pattern), fontset_key->pixelsize);
 
       FcPatternDestroy (pattern);
     }
